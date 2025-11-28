@@ -1,0 +1,31 @@
+﻿@page
+@model HomelibRazor.Pages.UpdateBookModel
+@{
+}
+<div class="row">
+  <h1 class="col-12 text-center">Edytowanie książki</h1>
+</div>
+<form enctype="multipart/form-data" method="post">
+  <div class="row">
+    <div class="col-6 m-0 p-0">
+      <p>Tytuł</p>
+      <input type="text" class="form-control input-lg" value="@Model.Book.Title" asp-for="Book.Title" />
+      <p>Imię autora</p>
+      <input type="text" class="form-control input-lg" value="@Model.Book.First_name" asp-for="Book.First_name" />
+      <p>Nazwisko autora</p>
+      <input type="text" class="form-control input-lg" value="@Model.Book.Last_name" asp-for="Book.Last_name" />
+      <p>Opis</p>
+      <input type="text" class="form-control input-lg" value="@Model.Book.Description" asp-for="Book.Description" />
+      <button type="submit" class="btn btn-success mt-3">Zapisz</button>
+      <a asp-page="/Index" class="btn btn-secondary mt-3">Anuluj</a>
+    </div>
+    <div class="col-6 m-0 p-0">
+      @if (Model.Book.Cover != null)
+      {
+        <img src="data:image/jpg; base64,@(Convert.ToBase64String(Model.Book.Cover))" width="400" />
+      }
+      <p>Wybierz zdjęcie okładki</p>
+      <input type="file" asp-for="CoverImg">
+    </div>
+  </div>
+</form>

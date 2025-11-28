@@ -1,0 +1,81 @@
+﻿@page
+@model HomelibRazor.Pages.IndexModel
+@{
+}
+
+<form method="post">
+  @foreach (var room in Model.RoomsList)
+  {
+    <table class="table table-striped">
+      <tr class="bg-primary">
+        <th class="text-center  " colspan="3">
+          <h4>@room.Name</h4>
+        </th>
+      </tr>
+      @if (Model.BookshelvesList.Where(n => n.Room_id == room.Id).Count() < 1)
+      {
+        <tr class="bg-secondary">
+          <th class="text-center " colspan="3">
+            <h5>Brak regałów w tym pokoju</h5>
+          </th>
+        </tr>
+      }
+      else
+      {
+        @foreach (var bookshelf in Model.BookshelvesList.Where(n => n.Room_id == room.Id).ToList())
+        {
+          <tr class="bg-secondary">
+            <th class="text-center " colspan="3">
+              <h5>@bookshelf.Name</h5>
+            </th>
+          </tr>
+          @if (Model.ShelvesList.Where(n => n.Bookshelf_id == bookshelf.Id).Count() < 1)
+          {
+            <tr>
+              <td colspan="3">Brak półek na tym regale</td>
+            </tr>
+          }
+          else
+          {
+            @foreach (var shelf in Model.ShelvesList.Where(n => n.Bookshelf_id == bookshelf.Id).ToList())
+            {
+              <tr>
+                <th class="text-center " colspan="3">
+                  <h6>@shelf.Name
+                    <a asp-page="/AddBook" asp-route-id="@shelf.Id" class="btn btn-success btn-sm rounded-circle">+</a>
+                  </h6>
+                </th>
+              </tr>
+              @if (Model.BooksList.Where(n => n.Shelf_id == shelf.Id).Count() < 1)
+              {
+                <tr>
+                  <td colspan="3">Brak książek na tej półce</td>
+                </tr>
+              }
+              else
+              {
+                <tr>
+                  <td>Tytuł</td>
+                  <td>Autor</td>
+                  <td></td>
+                </tr>
+                @foreach (var book in Model.BooksList.Where(n => n.Shelf_id == shelf.Id).ToList())
+                {
+                  <tr>
+                    <td>@book.Title</td>
+                    <td>@book.First_name @book.Last_name</td>
+                    <td class="text-end">
+                      <a asp-page="/ReadBook" asp-route-id="@book.Id" class="btn btn-success mb-1">Wyświetl książkę</a>
+                      <a asp-page="/UpdateBook" asp-route-id="@book.Id" class="btn btn-info mb-1">Edytuj książkę</a>
+                      <button type="submit" class="btn btn-danger mb-1" asp-page-handler="Delete" asp-route-id="@book.Id">Usuń           książkę</button>
+                    </td>
+                  </tr>
+                }
+              }
+            }
+          }
+        }
+      }
+    </table>
+  }
+</form>

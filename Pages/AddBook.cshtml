@@ -1,0 +1,24 @@
+﻿@page 
+@model HomelibRazor.Pages.AddBookModel
+@{
+}
+<div class="row">
+  <h1 class="col-12 text-center">Dodawanie książki</h1>
+</div>
+<form enctype="multipart/form-data" method="post">
+  <div class="row">
+    <p>Tytuł</p>
+    <input type="text" class="form-control input-lg" asp-for="Book.Title" />
+    <p>Imię autora</p>
+    <input type="text" class="form-control input-lg" asp-for="Book.First_name" />
+    <p>Nazwisko autora</p>
+    <input type="text" class="form-control input-lg" asp-for="Book.Last_name" />
+    <p>Opis</p>
+    <input type="text" class="form-control input-lg" asp-for="Book.Description" />
+    <p>Wybierz zdjęcie okładki</p>
+    <input type="file" asp-for="CoverImg">
+    <input type="hidden" asp-for="Shelf_id" />
+    <button type="submit" class="btn btn-success mt-3">Zapisz</button>
+    <a asp-page="/Index" class="btn btn-secondary mt-3">Anuluj</a>
+  </div>
+</form>

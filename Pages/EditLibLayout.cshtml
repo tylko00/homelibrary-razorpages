@@ -1,0 +1,54 @@
+﻿@page
+@model HomelibRazor.Pages.EditLibLayoutModel
+@{
+}
+<form method="post" asp-page-handler="Addr">
+  <input class="input-sm" asp-for="Room.Name" />
+  <button type="submit" class="btn btn-success">Dodaj pokój</button>
+</form>
+@foreach (var room in Model.RoomsList)
+{
+  <table class="table table-striped" style="width: 100%;">
+    <tr class="bg-primary">
+      <td class="text-center" style="width: 100%;">
+        <h4>@room.Name</h4>
+        <form method="post" asp-page-handler="Addbs" asp-route-id="@room.Id">
+          <input class="input-sm" asp-for="Bookshelf.Name" />
+          <button type="submit" class="btn btn-success">Dodaj
+            regał</button>
+        </form>
+        <form method="post" asp-page-handler="DeleteRoom" asp-route-id="@room.Id">
+          <button type="submit" class="btn btn-danger">Usuń pokój</button>
+        </form>
+      </td>
+    </tr>
+    @foreach (var bookshelf in Model.BookshelvesList.Where(n => n.Room_id == room.Id).ToList())
+    {
+      <tr class="bg-secondary">
+        <td class="text-center" style="width: 100%;">
+          <h5>@bookshelf.Name</h5>
+          <form method="post" asp-page-handler="Adds" asp-route-id="@bookshelf.Id">
+            <input class="input-sm" asp-for="Shelf.Name" />
+            <button type="submit" class="btn btn-success">Dodaj
+              półkę</button>
+          </form>
+          <form method="post" asp-page-handler="DeleteBookshelf" asp-route-id="@bookshelf.Id">
+            <button type="submit" class="btn btn-danger">Usuń regał</button>
+          </form>
+        </td>
+      </tr>
+      @foreach (var shelf in Model.ShelvesList.Where(n => n.Bookshelf_id == bookshelf.Id).ToList())
+      {
+        <tr>
+          <td class="text-center" style="width: 100%;">
+            <h6>@shelf.Name</h6>
+            <span class="badge bg-info rounded-pill">@Model.BooksList.Where(n => n.Shelf_id == shelf.Id).Count()</span>
+            <form method="post" asp-page-handler="DeleteShelf" asp-route-id="@shelf.Id">
+              <button type="submit" class="btn btn-danger">Usuń półkę</button>
+            </form>
+          <td>
+        </tr>
+      }
+    }
+  </table>
+}
